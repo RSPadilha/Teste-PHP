@@ -11,12 +11,21 @@
 
 
 function separaSilabas($palavra) {
+	// Declara o array de resposta
 	$resultado = array();
+	// Começa a contar do maior ao menor
 	for ($i=9; $i > 0; $i--) {
-		$aux = str_replace($i, "-", $palavra);
-		if($aux != $palavra){
-			$aux = preg_replace("/[0-9]/", "", $aux);
+		// Procura e faz a troca do $i na palavra pelo traço, somente uma vez, caso ache o valor da iteração
+		$palavra = preg_replace("/[$i]/", "-", $palavra, 1, $count);
+		// Se foi feita a troca
+		if($count == 1){
+			// O auxiliar é utilizado temporariamente para remover o resto dos números
+			$aux = preg_replace("/[0-9]/", "", $palavra);
+			// Insere no array resposta a palavra atual
 			$resultado[] = $aux;
+			// Remove o traço e entra no loop novamente com o mesmo valor, para que seja encontrado o próximo valor igual
+			$palavra = preg_replace("/-/", "", $palavra);
+			$i++;
 		}
 	}
 	return($resultado);
@@ -96,11 +105,11 @@ verificaResultado("07", $resultadoEsperado, $resultado);
 
 function verificaResultado($nTeste, $resultadoEsperado, $resultado) {
 	if($resultadoEsperado == $resultado) {
-		echo "Teste $nTeste passou.<br>";
+		echo "Teste $nTeste passou.\n";
 	} else {
-		echo "Teste $nTeste NAO passou<br>" .
-			"Resultado esperado =<br>" . var_export($resultadoEsperado,true) . "<br>" .
-			"Resultado obtido =<br>" . var_export($resultado,true) . "<br><br>";
+		echo "Teste $nTeste NAO passou\n" .
+			"Resultado esperado =\n" . var_export($resultadoEsperado,true) . "\n" .
+			"Resultado obtido =\n" . var_export($resultado,true) . "\n\n";
 	}
 }
 
